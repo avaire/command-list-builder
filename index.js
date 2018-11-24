@@ -57,7 +57,7 @@ for (let categoryName in commandMap) {
         }
 
         // Stores the command in its short and full versions.
-        categoryCommandsShort.push({ command });
+        categoryCommandsShort.push({ commandName, command });
         categoryCommandsFull.push({
             command: Mustache.render(templates.commandFull, {
                 commandUsage: formatList(command.usage, command),
