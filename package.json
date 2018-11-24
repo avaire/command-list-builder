@@ -16,5 +16,8 @@
     "bugs": {
         "url": "https://github.com/avaire/command-list-builder/issues"
     },
-    "homepage": "https://github.com/avaire/command-list-builder#readme"
+    "homepage": "https://github.com/avaire/command-list-builder#readme",
+    "dependencies": {
+        "mustache": "^3.0.1"
+    }
 }
