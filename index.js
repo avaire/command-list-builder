@@ -10,16 +10,17 @@ const statistics = {
     commands: 0
 };
 
-// const templates = {
-    // commandFull: fs.readFileSync(`./templates/_command-full.md`, { encoding: 'utf8' })
-// }
+const templates = {
+    commandFull: fs.readFileSync(`./templates/_command-full.md`, { encoding: 'utf8' })
+}
 
 const commands = {};
 const categories = [];
 for (let categoryName in commandMap) {
     statistics.categories++;
 
-    let categoryCommandsShort = []; 
+    let categoryCommandsFull = [];
+    let categoryCommandsShort = [];
     let categoryPrefix = commandMap[categoryName].prefix;
     for (let commandName in commandMap[categoryName].commands) {
         statistics.commands++;
@@ -28,12 +29,39 @@ for (let categoryName in commandMap) {
         command.trigger = categoryPrefix + command.triggers[0];
         command.shortDescription = command.description.split('\n')[0];
 
+        let commandRelationships = false;
+        if (command.relationships != null) {
+            commandRelationships = [];
+            for (let commandRelationship of command.relationships) {
+                let parts = commandRelationship.split('::');
+                if (parts.length === 2) {
+                    commandRelationships.push({
+                        name: commandMap[parts[0]].commands[parts[1]].name,
+                        command: parts[1]
+                    });
+                }
+            }
+        }
+
         categoryCommandsShort.push({ command });
+        categoryCommandsFull.push({
+            command: Mustache.render(templates.commandFull, {
+                commandUsage: command.usage === null ? false : command.usage.map(line => {
+                    return '\t' + line.replace(/\:command/, command.trigger).replace(/`/g, '');
+                }).join('\n'),
+                commandExample: command.example === null ? false : command.example.map(line => {
+                    return '\t' + line.replace(/\:command/, command.trigger).replace(/`/g, '');
+                }).join('\n'),
+                commandRelationships,
+                commandName,
+                command,
+            })
+        });
     }
 
     commands[categoryName.toLowerCase()] = {
         short: categoryCommandsShort,
-        full: null,
+        full: categoryCommandsFull,
     };
 }
 
