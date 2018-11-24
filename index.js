@@ -40,6 +40,12 @@ for (let categoryName in commandMap) {
         command.trigger = categoryPrefix + command.triggers[0];
         command.shortDescription = command.description.split('\n')[0];
 
+        // If the command priority is hidden we'll skip it here as
+        // well to prevent creating it in the markdown later.
+        if (command.priority === 'HIDDEN') {
+            continue;
+        }
+
         // Creates the command relationships, setting them to false by default, otherwise
         // storing them as a list of objects with the "name" and "command" keys.
         let commandRelationships = false;
