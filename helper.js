@@ -11,7 +11,7 @@ module.exports.formatList = function (array, command) {
         return false;
     }
     return array.map(line => {
-        let parts = line.split('-');
+        let parts = line.split('` -');
         if (parts.length <= 1) {
             return format(line, command);
         }
