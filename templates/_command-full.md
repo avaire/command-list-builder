@@ -3,6 +3,10 @@
 
 {{{command.description}}}
 
+{{#command.middlewares}}
+- {{{middleware}}}
+{{/command.middlewares}}
+
 {{#commandRelationships}}
 - [{{{name}}}](#{{{command}}})
 {{/commandRelationships}}

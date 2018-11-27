@@ -1,6 +1,9 @@
-const { formatList } = require('./helper.js');
 const Mustache = require('mustache');
 const fs = require('fs');
+const {
+    formatList,
+    formatMiddleware,
+} = require('./helper.js');
 
 const commandMap = JSON.parse(
     fs.readFileSync('commandMap.json', { encoding: 'utf8' })
@@ -34,17 +37,20 @@ for (let categoryName in commandMap) {
     for (let commandName in commandMap[categoryName].commands) {
         statistics.commands++;
 
-        // Creates the command variable used for the templates, and
-        // sets up some helpful keys for specific outputs.
+        // Creates the command variable used for the templates
         let command = commandMap[categoryName].commands[commandName];
-        command.trigger = categoryPrefix + command.triggers[0];
-        command.shortDescription = command.description.split('\n')[0];
 
         // If the command priority is hidden we'll skip it here as
         // well to prevent creating it in the markdown later.
         if (command.priority === 'HIDDEN') {
             continue;
         }
+
+        // Sets up some generated data from the command, to
+        // make generating the templates a bit easier.
+        command.trigger = categoryPrefix + command.triggers[0];
+        command.shortDescription = command.description.split('\n')[0];
+        command.middlewares = formatMiddleware(command.middlewares);
 
         // Creates the command relationships, setting them to false by default, otherwise
         // storing them as a list of objects with the "name" and "command" keys.
