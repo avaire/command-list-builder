@@ -50,7 +50,10 @@ for (let categoryName in commandMap) {
         // make generating the templates a bit easier.
         command.trigger = categoryPrefix + command.triggers[0];
         command.shortDescription = command.description.split('\n')[0];
-        command.middlewares = formatMiddleware(command.middlewares);
+        
+        let middlewares = formatMiddleware(command.middlewares);
+        command.middlewares = middlewares === false || middlewares.length === 0
+            ? false : '**Special permissions required to run this command**<br>' + middlewares.join('<br>');
 
         // Creates the command relationships, setting them to false by default, otherwise
         // storing them as a list of objects with the "name" and "command" keys.

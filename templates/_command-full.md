@@ -4,11 +4,11 @@
 {{{command.description}}}
 
 {{#command.middlewares}}
-- {{{middleware}}}
+{{{command.middlewares}}}
 {{/command.middlewares}}
 
 {{#commandRelationships}}
-- [{{{name}}}](#{{{command}}})
+ - [{{{name}}}](#{{{command}}})
 {{/commandRelationships}}
 
 {{#commandUsage}}

@@ -47,18 +47,14 @@ module.exports.formatMiddleware = function (middlewares) {
             case 'require':
                 result = formateRequire('and', ...parts[0].split(','));
                 if (result != null) {
-                    map.push({
-                        middleware: result
-                    });
+                    map.push(result);
                 }
                 break;
 
             case 'requireOne':
                 result = formateRequire('or', ...parts[0].split(','));
                 if (result != null) {
-                    map.push({
-                        middleware: result
-                    });
+                    map.push(result);
                 }
                 break;
         }
